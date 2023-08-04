@@ -19,6 +19,13 @@ service_list:
   - named
   - dhcpd
 
-## Configuration of Network
+## Configuration of Network Ports
+
+firewall_services:
+  - dhcp
+  - ftp
+  - dns
+  - tftp
+  
 
 

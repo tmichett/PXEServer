@@ -14,6 +14,16 @@
         state: present
       become: true
 
+#    - name: Enable Firewall Ports and Services
+    - name: Enable Firewall Services
+      ansible.posix.firewalld:
+        service: "{{ item }}"
+        permanent: true
+        state: enabled 
+        immediate: true 
+      loop: "{{ firewall_services }}"
+
+# Enable Services (must be done after configuration files applied)
     - name: Enable Services 
       ansible.builtin.systemd_service:
         daemon_reexec: false
@@ -27,5 +37,5 @@
         state: reloaded
       loop: "{{ service_list }}"
 
-#    - name: Enable Firewall Ports and Services
+
     
