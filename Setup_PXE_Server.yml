@@ -21,7 +21,7 @@
         enabled: false
         force: false
         masked: false
-        name: "{{ items }}"
+        name: "{{ item }}"
         no_block: false
         scope: system
         state: reloaded
