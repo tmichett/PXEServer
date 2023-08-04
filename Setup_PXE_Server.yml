@@ -1,0 +1,31 @@
+---
+- name: Setup System for a PXE Server
+  hosts: localhost
+  vars_files:
+    - pxe_vars.yml
+
+  tasks:
+
+## Install Packages
+
+    - name: Install Packages for PXE Boot Services
+      ansible.builtin.dnf:
+        name: "{{ install_packages }}"
+        state: present
+      become: true
+
+    - name: Enable Services 
+      ansible.builtin.systemd_service:
+        daemon_reexec: false
+        daemon_reload: false
+        enabled: false
+        force: false
+        masked: false
+        name: "{{ items }}"
+        no_block: false
+        scope: system
+        state: reloaded
+      loop: "{{ service_list }}"
+
+#    - name: Enable Firewall Ports and Services
+    

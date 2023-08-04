@@ -1,4 +1,24 @@
 ---
-engine_url: https://rhvm.lab.example.com/ovirt-engine/api
-engine_user: admin@internal
-engine_cafile: /etc/pki/ovirt-engine/ca.pem
+## Packages to install
+install_packages: 
+  - httpd
+  - bind
+  - bind-utils
+  - vsftpd
+  - createrepo
+  - tree 
+  - syslinux 
+  - tftp-server 
+  - dhcp
+  - firewalld
+
+## Service Information
+service_list:
+  - httpd
+  - vsftpd
+  - named
+  - dhcpd
+
+## Configuration of Network
+
+
