@@ -26,15 +26,12 @@
 # Enable Services (must be done after configuration files applied)
     - name: Enable Services 
       ansible.builtin.systemd_service:
-        daemon_reexec: false
-        daemon_reload: false
-        enabled: false
-        force: false
-        masked: false
+        enabled: true
+        daemon_reload:  true 
         name: "{{ item }}"
         no_block: false
         scope: system
-        state: reloaded
+        state: started
       loop: "{{ service_list }}"
 
 
