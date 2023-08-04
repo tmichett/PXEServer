@@ -9,7 +9,7 @@ install_packages:
   - tree 
   - syslinux 
   - tftp-server 
-  - dhcp
+  - dhcp-server
   - firewalld
 
 ## Service Information
