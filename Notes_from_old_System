@@ -1,0 +1,343 @@
+Kickstart Server Setup and Building Repo Server
+===========================================================================
+
+0. Take Linux System and install HTTP and FTP server
+# yum install httpd
+# yum install vsftpd
+
+0a. Set HTTP and FTP servers to start at bootup
+# chkconfig httpd on
+# chkconfig vsftpd on
+# servcice httpd restart
+# service vsftpd restart
+
+1. Copy Linux Disk to FTP/Pub directory and create link in HTTP server directory
+# cp -avR /path/of/cdrom /var/ftp/pub
+
+1a. Create Symbolic links for HTTP server directory
+# cd /var/www/html
+# ln -s /var/ftp/pub pub
+
+1c. Install CreateRepo Utility
+# yum install -y createrepo
+
+2. Setup and Configure Repos for the Client-side machines
+Go to any client machine and create repo
+# vi /etc/yum.repos.d/install.repo
+
+[InstallRepo]
+name=Install Repo
+baseurl=http://master.example.com/pub/RHEL6
+enabled=1
+gpgcheck=0
+
+3. Create a Kickstart directory for holding the Kickstart file and base ks file
+# mkdir /var/www/html/pub/ks
+# touch /var/www/html/pub/ks/redhat-base.cfg
+
+4. Set SELinux context on web directory
+# restorecon -r /var/ftp/pub
+
+5. Install (tree, syslinux, tftp-server, and dhcp) for the PXE boots
+# yum install -y tree syslinux tftp-server dhcp
+
+6. Configure TFTP Server with directories
+# mkdir -p /tftpboot/{images,pxelinux.cfg}
+
+6a. Copy Kernel files from PXE boot images directory
+# cp /var/www/html/pub/RHEL6/images/pxeboot/vmlinuz /tftpboot/images
+# cp /var/www/html/pub/RHEL6/images/pxeboot/initrd.img /tftpboot/images
+
+6b. Configure TFTP Service with XINETD
+# vi /etc/xinetd.d/tftp
+
+service tftp
+{
+        socket_type             = dgram
+        protocol                = udp
+        wait                    = yes
+        user                    = root
+        server                  = /usr/sbin/in.tftpd
+        server_args             = -s /tftpboot
+        disable                 = no
+        per_source              = 11
+        cps                     = 100 2
+        flags                   = IPv4
+}
+
+6c. Restart XINETD Service and turn on service
+# chkconfig tftp on
+# service xinetd restart
+
+
+6d. Copy files from syslinux for tftp server
+# whereis syslinux
+syslinux: /usr/bin/syslinux /usr/share/syslinux /usr/share/man/man1/syslinux.1.gz
+-- Want to copy files from the lib directory
+# cp /usr/share/syslinux/menu.c32 /tftpboot/
+# cp /usr/share/syslinux/vesamenu.c32 /tftpboot/
+# cp /usr/share/syslinux/pxelinux.0 /tftpboot/
+
+6e. Create the Default file
+# touch /tftpboot/pxelinux.cfg/default
+
+6f. Setup SELinux Context on /tftpboot directory
+# restorecon -r /tftpboot/
+
+
+7. Configure the DHCP Server and edit the dhcpd.conf file
+
+---- Note: The dns-update-style interim; can cause problems in some DHCPD implementations.
+# vi /etc/dhcp/dhcpd.conf
+
+#dns-update-style interim;
+authoritative;
+
+subnet 192.168.0.0 netmask 255.255.255.0 {
+        ### Parameters for local subnet ###
+        option routers                  192.168.0.254;
+        option subnet-mask              255.255.255.0;
+        option domain-name              "example.com";
+        option domain-name-servers      192.168.0.254;
+        default-lease-time              21600;
+        max-lease-time                  43200;
+
+        range dynamic-bootp     192.168.0.100 192.168.0.200;
+
+	host sat6 {
+                hardware ethernet 08:00:27:D6:AD:3A;
+                fixed-address 192.168.0.50;
+        }
+
+	host satellite {
+                hardware ethernet 08:00:27:AF:BB:0F;
+                fixed-address 192.168.0.51;
+        }
+
+        ### PXE Server IP ###
+        next-server                     192.168.0.254;
+        filename                        "pxelinux.0";
+        }
+                                                
+
+7a. Set DHCPD service to single network adapter
+
+# vi /etc/sysconfig/dhcpd
+--------- File Contents ---------------
+# Command line options here
+DHCPDARGS="eth1";
+
+7b. Restart the DHCPD Service and set service to be on
+# chkconfig dhcpd on
+# service dhcpd restart
+  -- Made it to here 3/6/12
+
+-- Take from other master
+8. Setup the Default Boot Menu
+# vi /tftpboot/pxelinux.cfg/default 
+
+default menu.c32
+prompt 5
+timeout 15
+
+MENU TITLE PXE Menu
+
+LABEL RedHat 6.1 x64
+MENU LABEL RedHat 6.1 x64
+KERNEL images/vmlinuz
+append initrd=images/initrd.img linux ks=http://master.example.com/pub/kickstart/test.cfg
+
+---- Note .... need to edit this some more -------
+label 1
+  kernel rhel5/vmlinuz
+  append initrd=rhel5/initrd.img ramdisk_size=9690 method=http://master.example.com/pub/os/rhel5 ip=dhcp ks=http://master.example.com/pub/ks/stationX_ks.php
+
+
+9. Setup IPTables for DHCP, HTTP, FTP, TFTP, DHCP, DNS
+
+
+10. Configure DNS Server (BIND/NAMED)
+
+# yum -y install bind
+# chkconfig named on
+# vi /etc/resolve.conf
+
+
+--- Take from other master
+-------- File Contents --------
+search example.com
+domain example.com
+nameserver 192.168.0.254
+
+
+======== Setup Forward DNS Zone File===================
+# mkdir -p /var/named/zones
+# vi /var/named/zones/example.com.zone
+
+---------File Contents --------------
+$TTL 86400
+example.com.    IN      SOA     master.example.com. root.master.example.com. (
+                                0801201010      ; serial number
+                                1H              ; refresh slave
+                                5M              ; retry query
+                                1W              ; expire
+                                1M;             ; negative TTL
+                        )
+@       IN      NS      master.example.com.
+@       IN      MX      10 master.example.com.
+
+example.com.            IN      A       192.168.0.254
+master.example.com.     IN      A       192.168.0.254
+mail.example.com.       IN      CNAME   master.example.com.
+kerberos.example.com.   IN      CNAME   master.example.com.
+
+$ORIGIN example.com.
+station1                IN      A       192.168.0.1
+station2                IN      A       192.168.0.2
+station3                IN      A       192.168.0.3
+
+sat6            IN      A       192.168.0.50
+satellite               IN      A       192.168.0.51
+server101               IN      A       192.168.0.101
+server102               IN      A       192.168.0.102
+server103               IN      A       192.168.0.103
+
+=========== Setup Reverse DNS Zone File ========================
+# vi /var/named/zones/0.168.192.in-addr-arpa.zone
+
+----------- File Contents --------------------
+$TTL 86400
+0.168.192.in-addr.arpa. IN      SOA     master.example.com. root.master.example.com. (
+                                0801201010      ; serial number
+                                1H              ; refresh slave
+                                5M              ; retry query
+                                1W              ; expire
+                                1M;             ; negative TTL
+                        )
+@       IN      NS      master.example.com.
+254     IN      PTR     master.example.com.
+1       IN      PTR     station1.example.com.
+2       IN      PTR     station2.example.com.
+3       IN      PTR     station3.example.com.
+
+50      IN      PTR     sat6.example.com.
+51      IN      PTR     satellite.example.com.
+101     IN      PTR     server101.example.com.
+102     IN      PTR     server102.example.com.
+103     IN      PTR     server103.example.com.
+
+
+============= Setup Named Configuration Settings =================
+
+# vi /etc/sysconfig/named
+
+** Note: add the following or change the value below
+
+OPTIONS="-4"
+
+============== Setup Named.Conf file =====================
+
+# vi /etc/named.conf
+options {
+        listen-on port 53 { 127.0.0.1; 192.168.0.254; };
+        listen-on-v6 port 53 { ::1; };
+        directory       "/var/named";
+        dump-file       "/var/named/data/cache_dump.db";
+        statistics-file "/var/named/data/named_stats.txt";
+        memstatistics-file "/var/named/data/named_mem_stats.txt";
+
+        // Those options should be used carefully because they disable port
+        // randomization
+        // query-source    port 53;
+        // query-source-v6 port 53;
+
+        allow-query     { localhost; 192.168.0.0/24; };
+        allow-query-cache     { localhost; 192.168.0.0/24; };
+
+        forward only;
+        forwarders {
+                208.67.222.222;
+                208.67.220.220;
+        };
+};
+logging {
+        channel default_debug {
+                file "data/named.run";
+                severity dynamic;
+        };
+};
+zone "." IN {
+        type hint;
+        file "named.ca";
+};
+
+zone "example.com" IN {
+        type master;
+        file "zones/example.com.zone";
+        allow-update{ none; };
+};
+
+#zone "0.168.192.in-addr.arpa" IN {
+#       type master;
+#       file "zones/0.168.192.in-addr.arpa.zone";
+#       allow-update{ none; };
+#};
+
+#zone "cracker.org" IN {
+#       type master;
+#       file "zones/cracker.org.zone";
+#       allow-update{ none; };
+#};
+
+#zone "1.168.192.in-addr.arpa" IN {
+#       type master;
+#       file "zones/1.168.192.in-addr.arpa.zone";
+#       allow-update{ none; };
+#};
+
+
+
+# include "/etc/rndc.key";
+
+=================== End of Named.conf file ====================
+
+# service named restart
+
+
+
+11. Edit IPTables for TFTP and other services
+
+# vi /etc/sysconfig/iptables
+
+-------------- File Contents to Add for TFTP -----------------------
+#tftp rules
+-A RH-Firewall-1-INPUT -s 192.168.1.0/24 -m udp -p udp --dport 69 -j ACCEPT
+#end tftp rules
+
+------------------- End contents to Add for TFTP ----------------------
+
+
+
+
+
+
+
+
+******* Notes ************
+For some reason http://master/pub is available, but nothing under it can be viewed
+For some reason, when network manager attempts to set IP address, it will give errors and assign a different IP address - a 10. network
+
+** Parallels Desktop has a built-in DHCP Server, need to disable
+Parallels Desktop -> Preferences -> Advanced -> (Network) Change Setting -> uncheck DHCP
+
+** VMWARE Fusion 4 Disable DHCP
+: Disabling host only dhcp in Fusion 4?
+Go to /Library/Preferences/VMware Fusion
+ 
+Edit networking file:
+ 
+answer VNET_1 DHCP yes to no.
+ 
+re-launch your Fusion.
+
+

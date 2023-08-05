@@ -1,0 +1,26 @@
+$TTL 86400
+example.com.    IN      SOA     master.example.com. root.master.example.com. (
+                                0801201010      ; serial number
+                                1H              ; refresh slave
+                                5M              ; retry query
+                                1W              ; expire
+                                1M;             ; negative TTL
+                        )
+@       IN      NS      master.example.com.
+@       IN      MX      10 master.example.com.
+
+example.com.            IN      A       192.168.0.254
+master.example.com.     IN      A       192.168.0.254
+mail.example.com.       IN      CNAME   master.example.com.
+kerberos.example.com.   IN      CNAME   master.example.com.
+
+$ORIGIN example.com.
+station1                IN      A       192.168.0.1
+station2                IN      A       192.168.0.2
+station3                IN      A       192.168.0.3
+
+sat6            IN      A       192.168.0.50
+satellite               IN      A       192.168.0.51
+server101               IN      A       192.168.0.101
+server102               IN      A       192.168.0.102
+server103               IN      A       192.168.0.103
