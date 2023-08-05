@@ -33,3 +33,8 @@ network_adapter: eth0   ## Network adapter to bind DHCP to
 network_subnet: 192.168.0   ## Network Subnet. This is the left-most 3 sections of the subnet. For example, 192.168.0 for the 192.168.0.0/24 subnet
 net_subnet_reverse: 0.168.192 ## Network Subnet in reverse order
 
+
+## Configure Domain Settings
+
+dns_domain_name: example.com  ## Network domain name. For example we want master.example.com to be the master server FQDN, domain name is "example.com"
+dns_server_hostname: master   ## Short hostname of the PXE boot/kickstart server. For example we want master.example.com to be the master server FQDN, the dns_server_hostname is "master".

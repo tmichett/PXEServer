@@ -1,19 +1,17 @@
 $TTL 86400
-0.168.192.in-addr.arpa. IN      SOA     master.example.com. root.master.example.com. (
+0.168.192.in-addr.arpa. IN      SOA     {{ dns_server_hostname }}.{{ dns_domain_name }}. root.{{ dns_server_hostname }}.{{ dns_domain_name }}. (
                                 0801201010      ; serial number
                                 1H              ; refresh slave
                                 5M              ; retry query
                                 1W              ; expire
                                 1M;             ; negative TTL
                         )
-@       IN      NS      master.example.com.
-254     IN      PTR     master.example.com.
-1       IN      PTR     station1.example.com.
-2       IN      PTR     station2.example.com.
-3       IN      PTR     station3.example.com.
+@       IN      NS      {{ dns_server_hostname }}.{{ dns_domain_name }}.
+254     IN      PTR     {{ dns_server_hostname }}.{{ dns_domain_name }}.
+1       IN      PTR     station1.{{ dns_domain_name }}.
+2       IN      PTR     station2.{{ dns_domain_name }}.
+3       IN      PTR     station3.{{ dns_domain_name }}.
 
-50      IN      PTR     sat6.example.com.
-51      IN      PTR     satellite.example.com.
-101     IN      PTR     server101.example.com.
-102     IN      PTR     server102.example.com.
-103     IN      PTR     server103.example.com.
+101     IN      PTR     server101.{{ dns_domain_name }}.
+102     IN      PTR     server102.{{ dns_domain_name }}.
+103     IN      PTR     server103.{{ dns_domain_name }}.

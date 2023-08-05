@@ -3,6 +3,7 @@
   hosts: localhost
   vars_files:
     - pxe_vars.yml
+    - template_file_vars.yml
 
   tasks:
 
@@ -22,6 +23,25 @@
         state: enabled 
         immediate: true 
       loop: "{{ firewall_services }}"
+
+##  Use Jinja Template Module to create configuration
+
+    - name: Create configuraition files
+      # Comment
+      ansible.builtin.template:
+        src: ./{{ item.filename }}
+        dest: "{{ item.destination_filename }}"
+      loop: "{{ template_files }}"
+    
+##  Use Ansible File Modules to copy static configuration files
+
+    - name: Copy NAMED File
+      ansible.builtin.copy:
+        dest: ./files/named
+        src: /etc/sysconfig/named
+    
+
+
 
 ## Enable Services (must be done after configuration files applied)
     - name: Enable Services 

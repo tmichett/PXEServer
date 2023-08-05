@@ -1,0 +1,7 @@
+---
+template_files:
+  - filename: ./templates/dhcpd.conf.j2
+    destination_filename: /etc/dhcp/dhcpd.conf
+  - filename: ./templates/etc_sysconfig_dhcpd.j2
+    destination_filename: /etc/sysconfig/dhcpd
+    

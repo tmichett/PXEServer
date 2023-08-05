@@ -31,9 +31,9 @@ zone "." IN {
         file "named.ca";
 };
 
-zone "example.com" IN {
+zone "{{ dns_domain_name }}" IN {
         type master;
-        file "zones/example.com.zone";
+        file "zones/{{ dns_domain_name}}.zone";
         allow-update{ none; };
 };
 

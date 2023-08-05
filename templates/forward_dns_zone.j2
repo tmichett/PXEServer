@@ -1,20 +1,20 @@
 $TTL 86400
-example.com.    IN      SOA     master.example.com. root.master.example.com. (
+{{ dns_domain_name }}.    IN      SOA     {{ dns_server_hostname }}.{{ dns_domain_name }}. root.{{ dns_server_hostname }}.{{ dns_domain_name }}. (
                                 0801201010      ; serial number
                                 1H              ; refresh slave
                                 5M              ; retry query
                                 1W              ; expire
                                 1M;             ; negative TTL
                         )
-@       IN      NS      master.example.com.
-@       IN      MX      10 master.example.com.
+@       IN      NS      {{ dns_server_hostname }}.{{ dns_domain_name }}.
+@       IN      MX      10 {{ dns_server_hostname }}.{{ dns_domain_name }}.
 
-example.com.            IN      A       {{ network_subnet}}.254
-master.example.com.     IN      A       {{ network_subnet}}.254
-mail.example.com.       IN      CNAME   master.example.com.
-kerberos.example.com.   IN      CNAME   master.example.com.
+{{ dns_domain_name }}.            IN      A       {{ network_subnet}}.254
+{{ dns_server_hostname }}.{{ dns_domain_name }}.     IN      A       {{ network_subnet}}.254
+mail.{{ dns_domain_name }}.       IN      CNAME   {{ dns_server_hostname }}.{{ dns_domain_name }}.
+kerberos.{{ dns_domain_name }}.   IN      CNAME   {{ dns_server_hostname }}.{{ dns_domain_name }}.
 
-$ORIGIN example.com.
+$ORIGIN {{ dns_domain_name }}.
 station1                IN      A       {{ network_subnet}}.1
 station2                IN      A       {{ network_subnet}}.2
 station3                IN      A       {{ network_subnet}}.3
