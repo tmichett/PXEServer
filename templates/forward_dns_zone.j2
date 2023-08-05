@@ -9,18 +9,16 @@ example.com.    IN      SOA     master.example.com. root.master.example.com. (
 @       IN      NS      master.example.com.
 @       IN      MX      10 master.example.com.
 
-example.com.            IN      A       192.168.0.254
-master.example.com.     IN      A       192.168.0.254
+example.com.            IN      A       {{ network_subnet}}.254
+master.example.com.     IN      A       {{ network_subnet}}.254
 mail.example.com.       IN      CNAME   master.example.com.
 kerberos.example.com.   IN      CNAME   master.example.com.
 
 $ORIGIN example.com.
-station1                IN      A       192.168.0.1
-station2                IN      A       192.168.0.2
-station3                IN      A       192.168.0.3
+station1                IN      A       {{ network_subnet}}.1
+station2                IN      A       {{ network_subnet}}.2
+station3                IN      A       {{ network_subnet}}.3
 
-sat6            IN      A       192.168.0.50
-satellite               IN      A       192.168.0.51
-server101               IN      A       192.168.0.101
-server102               IN      A       192.168.0.102
-server103               IN      A       192.168.0.103
+server101               IN      A       {{ network_subnet}}.101
+server102               IN      A       {{ network_subnet}}.102
+server103               IN      A       {{ network_subnet}}.103

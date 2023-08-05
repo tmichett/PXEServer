@@ -1,5 +1,5 @@
 options {
-        listen-on port 53 { 127.0.0.1; 192.168.0.254; };
+        listen-on port 53 { 127.0.0.1; {{ network_subnet}}.254; };
         listen-on-v6 port 53 { ::1; };
         directory       "/var/named";
         dump-file       "/var/named/data/cache_dump.db";
@@ -11,13 +11,13 @@ options {
         // query-source    port 53;
         // query-source-v6 port 53;
 
-        allow-query     { localhost; 192.168.0.0/24; };
-        allow-query-cache     { localhost; 192.168.0.0/24; };
+        allow-query     { localhost; "{{ network_subnet}}".0/24; };
+        allow-query-cache     { localhost; {{ network_subnet}}.0/24; };
 
         forward only;
         forwarders {
-                208.67.222.222;
-                208.67.220.220;
+                8.8.8.8;
+                1.1.1.1;
         };
 };
 logging {
@@ -37,24 +37,11 @@ zone "example.com" IN {
         allow-update{ none; };
 };
 
-#zone "0.168.192.in-addr.arpa" IN {
-#       type master;
-#       file "zones/0.168.192.in-addr.arpa.zone";
-#       allow-update{ none; };
-#};
-
-#zone "cracker.org" IN {
-#       type master;
-#       file "zones/cracker.org.zone";
-#       allow-update{ none; };
-#};
-
-#zone "1.168.192.in-addr.arpa" IN {
-#       type master;
-#       file "zones/1.168.192.in-addr.arpa.zone";
-#       allow-update{ none; };
-#};
+zone "{{ net_subnet_reverse }}.in-addr.arpa" IN {
+       type master;
+       file "zones/"{{ net_subnet_reverse }}".in-addr.arpa.zone";
+       allow-update{ none; };
+};
 
 
-
-# include "/etc/rndc.key";
+include "/etc/rndc.key";

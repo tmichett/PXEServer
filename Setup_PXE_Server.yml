@@ -14,7 +14,7 @@
         state: present
       become: true
 
-#    - name: Enable Firewall Ports and Services
+##  Enable Firewall Ports and Services
     - name: Enable Firewall Services
       ansible.posix.firewalld:
         service: "{{ item }}"
@@ -23,7 +23,7 @@
         immediate: true 
       loop: "{{ firewall_services }}"
 
-# Enable Services (must be done after configuration files applied)
+## Enable Services (must be done after configuration files applied)
     - name: Enable Services 
       ansible.builtin.systemd_service:
         enabled: true
