@@ -37,8 +37,8 @@
 
     - name: Copy NAMED File
       ansible.builtin.copy:
-        dest: ./files/named
-        src: /etc/sysconfig/named
+        src: ./files/named
+        dest: /etc/sysconfig/named
     
 
 
