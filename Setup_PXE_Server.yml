@@ -29,9 +29,9 @@
     - name: Create configuraition files
       # Comment
       ansible.builtin.template:
-        src: ./{{ item.filename }}
-        dest: "{{ item.destination_filename }}"
-      loop: "{{ template_files }}"
+        src: ./{{ item['value']['filename'] }}
+        dest: "{{ item.['value']['destination_filename'] }}"
+      loop: "{{ template_files | dict2items }}"
     
 ##  Use Ansible File Modules to copy static configuration files
 
