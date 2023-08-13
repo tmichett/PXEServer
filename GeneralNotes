@@ -1,0 +1,11 @@
+### Getting Boot SHIMS for EFI
+
+dnf install shim-x64 grub2-efi-x64 --installroot=/tmp/fedora --releasever 38
+
+
+### Getting FX38 Boot images for PXEBoot/Kickstart process
+mkdir -p /var/lib/tftpboot/f38
+ wget https://download.fedoraproject.org/pub/fedora/linux/releases/38/Server/x86_64/os/images/pxeboot/vmlinuz -O /var/lib/tftpboot/f38/vmlinuz
+ wget https://download.fedoraproject.org/pub/fedora/linux/releases/38/Server/x86_64/os/images/pxeboot/initrd.img -O /var/lib/tftpboot/f38/initrd.img
+
+## Image size for PXE Splash must be 640x480
