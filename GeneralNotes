@@ -32,3 +32,10 @@ https://fedoramagazine.org/how-to-set-up-a-tftp-server-on-fedora/
 https://apuntesderootblog.wordpress.com/2020/09/04/pxe-server-in-fedora-with-dnsmasq/
 
 https://docs.fedoraproject.org/en-US/fedora/f36/install-guide/advanced/Network_based_Installations/
+
+
+
+/run/media/$(whoami)/FedoraRemix
+
+
+Need to identify who has FedoraRemix Mounted and copy the SquashFS.img to WWW location.
