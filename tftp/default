@@ -14,11 +14,10 @@ menu default
 localboot 0xffff
 
 label linux
-menu label ^Install Fedora 38 64-bit
+menu label ^Boot Fedora 38 Remix 64-bit (LiveCD)
+#	kernel f38live/vmlinuz0
+#	APPEND rootflags=loop initrd=f38live/initrd0.img root=live:/FedoraRemix.iso rootfstype=auto ro rd.live.image quiet  rhgb rd.luks=0 rd.md=0 rd.dm=0
+#ONERROR LOCALBOOT 0
 kernel f38/vmlinuz
-append initrd=f38/initrd.img inst.stage2=https://download.fedoraproject.org/pub/fedora/linux/releases/38/Server/x86_64/os/ ip=dhcp
+append initrd=f38/initrd.img root=live:http://192.168.0.1/livecd/squashfs.img ro rd.live.image rd.luks=0 rd.
 
-label server
-menu label ^Install Fedora 38 ( Minimal Image )
-kernel f38/vmlinuz
-append initrd=f38/initrd.img inst.stage2=https://download.fedoraproject.org/pub/fedora/linux/releases/38/Server/x86_64/os/ ip=dhcp ks=https://example.com/fedora/kickstarts/minimal.ks
