@@ -1,0 +1,22 @@
+#default vesamenu.c32
+#prompt 1
+UI vesamenu.c32
+timeout 600
+MENU TITLE Travis's Fedora Remix PXE Boot Menu
+#MENU RESOLUTION 1024 768
+MENU BACKGROUND pxe_splash.png
+menu width 80
+menu rows 14
+
+label local
+menu label Boot from ^local drive
+menu default
+localboot 0xffff
+
+label linux
+menu label ^Boot Fedora 38 Remix 64-bit (LiveCD)
+#	kernel f38live/vmlinuz0
+#	APPEND rootflags=loop initrd=f38live/initrd0.img root=live:/FedoraRemix.iso rootfstype=auto ro rd.live.image quiet  rhgb rd.luks=0 rd.md=0 rd.dm=0
+#ONERROR LOCALBOOT 0
+kernel f38/vmlinuz
+append initrd=f38/initrd.img root=live:http://192.168.0.1/livecd/squashfs.img ro rd.live.image rd.luks=0 rd.dm=0

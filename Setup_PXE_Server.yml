@@ -4,6 +4,7 @@
   vars_files:
     - pxe_vars.yml
     - template_file_vars.yml
+    - file_copy_vars.yml
 
   tasks:
 
@@ -29,17 +30,20 @@
     - name: Create configuraition files
       # Comment
       ansible.builtin.template:
-        src: ./{{ item['filename'] }}
+        src: "{{ item['filename'] }}"
         dest: "{{ item['destination_filename'] }}"
       loop: "{{ template_files }}"
     
-##  Use Ansible File Modules to copy static configuration files
+##  Use Ansible Copy Modules to copy static configuration files
 
-    - name: Copy NAMED File
+    - name: Copy Files to correct locations
       ansible.builtin.copy:
-        src: ./files/named
-        dest: /etc/sysconfig/named
-    
+        src: "{{ item['filename'] }}"
+        dest: "{{ item['destination_filename'] }}"
+      loop: "{{ files_to_copy }}"
+
+
+
 ## Enable Services (must be done after configuration files applied)
     - name: Enable Services 
       ansible.builtin.systemd_service:
