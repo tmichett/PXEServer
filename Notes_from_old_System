@@ -122,7 +122,7 @@ subnet 192.168.0.0 netmask 255.255.255.0 {
 
 7a. Set DHCPD service to single network adapter
 
-# vi /etc/sysconfig/dhcpd
+# vi /etc/sysconfig/dhcpd   *** No longer needed (8/13/23)
 --------- File Contents ---------------
 # Command line options here
 DHCPDARGS="eth1";
