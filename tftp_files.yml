@@ -1,0 +1,8 @@
+---
+tftp_files:
+  - /usr/share/syslinux/pxelinux.0
+  - /usr/share/syslinux/menu.c32
+  - /usr/share/syslinux/vesamenu.c32
+  - /usr/share/syslinux/ldlinux.c32
+  - /usr/share/syslinux/libcom32.c32
+  - /usr/share/syslinux/libutil.c32

@@ -5,6 +5,7 @@
     - pxe_vars.yml
     - template_file_vars.yml
     - file_copy_vars.yml
+    - tftp_files.yml
 
   tasks:
 
@@ -25,9 +26,22 @@
         immediate: true 
       loop: "{{ firewall_services }}"
 
+## Make TFTP Directory
+
+    - name: Create directory for TFTP Files
+      ansible.builtin.file:
+        path: /var/lib/tftpboot/{{ item }}
+        state: directory
+        mode: '0755'
+      loop:
+        - pxelinux.cfg
+        - f38
+        - uefi
+
+
 ##  Use Jinja Template Module to create configuration
 
-    - name: Create configuraition files
+    - name: Create configuration files
       # Comment
       ansible.builtin.template:
         src: "{{ item['filename'] }}"
@@ -42,6 +56,14 @@
         dest: "{{ item['destination_filename'] }}"
       loop: "{{ files_to_copy }}"
 
+## Copy TFTP Files from Remote source to new directory
+
+    - name: Copy Syslinux Files to correct locations
+      ansible.builtin.copy:
+        src: "{{ item }}"
+        dest: /var/lib/tftpboot/
+        remote_src: true
+      loop: "{{ tftp_files }}"
 
 
 ## Enable Services (must be done after configuration files applied)
