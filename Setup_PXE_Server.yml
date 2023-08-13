@@ -72,7 +72,7 @@
         src: "{{ item }}"
         dest: /var/lib/tftpboot/f38
         remote_src: true
-      loop: "{{ tftp__boot_files }}"
+      loop: "{{ tftp_boot_files }}"
 
 
 
