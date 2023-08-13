@@ -40,9 +40,6 @@
         src: ./files/named
         dest: /etc/sysconfig/named
     
-
-
-
 ## Enable Services (must be done after configuration files applied)
     - name: Enable Services 
       ansible.builtin.systemd_service:

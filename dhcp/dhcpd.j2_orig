@@ -1,0 +1,19 @@
+#dns-update-style interim;
+authoritative;
+
+subnet {{ network_subnet}}.0 netmask 255.255.255.0 {
+        ### Parameters for local subnet ###
+        option routers                  {{ network_subnet}}.254;
+        option subnet-mask              255.255.255.0;
+        option domain-name              "example.com";
+        option domain-name-servers     {{ network_subnet}}.254;
+        default-lease-time              21600;
+        max-lease-time                  43200;
+
+        range dynamic-bootp     {{ network_subnet}}.100 {{ network_subnet}}.200;
+
+        ### PXE Server IP ###
+        next-server                     192.168.0.254;
+        filename                        "pxelinux.0";
+        }
+             

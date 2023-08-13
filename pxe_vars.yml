@@ -18,6 +18,7 @@ service_list:
   - vsftpd
   - named
   - dhcpd
+  - tftp.socket
 
 ## Configuration of Network Ports
 
