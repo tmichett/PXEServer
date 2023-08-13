@@ -1,4 +1,4 @@
 ---
-tftp_files:
+tftp_boot_files:
   - /opt/FedoraRemixPXE/initrd.img
   - /opt/FedoraRemixPXE/vmlinuz
