@@ -1,8 +1,8 @@
 ---
 files_to_copy:
   - filename: ./files/tftp_default_pxelinux
-    destination_filename: /var/lib/tftp/pxelinux.0/default
+    destination_filename: /var/lib/tftpboot/pxelinux.0/default
   - filename: ./files/pxe_splash.png
-    destination_filename: /var/lib/tftp/pxe_splash.png
+    destination_filename: /var/lib/tftpboot/pxe_splash.png
   - filename: ./files/named
     destination_filename: /etc/sysconfig/named
