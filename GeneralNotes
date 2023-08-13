@@ -9,3 +9,26 @@ mkdir -p /var/lib/tftpboot/f38
  wget https://download.fedoraproject.org/pub/fedora/linux/releases/38/Server/x86_64/os/images/pxeboot/initrd.img -O /var/lib/tftpboot/f38/initrd.img
 
 ## Image size for PXE Splash must be 640x480
+
+### PXEBOOT LiveCD
+
+https://linux.xvx.cz/2017/07/how-to-build-pxe-fedora-26-live-image.html
+https://lukas.zapletalovi.com/posts/2016/hidden-feature-of-fedora-24-live-pxe-boot/
+
+
+[root@fedora FedoraRemix]# livecd-iso-to-pxeboot FedoraRemix.iso
+
+
+https://github.com/livecd-tools/livecd-tools/tree/main/tools
+
+https://weldr.io/lorax/livemedia-creator.html
+
+https://lukas.zapletalovi.com/posts/2016/hidden-feature-of-fedora-24-live-pxe-boot/
+
+ (Not used but looked at for references)
+https://fedoramagazine.org/how-to-set-up-a-tftp-server-on-fedora/
+
+(Not used)
+https://apuntesderootblog.wordpress.com/2020/09/04/pxe-server-in-fedora-with-dnsmasq/
+
+https://docs.fedoraproject.org/en-US/fedora/f36/install-guide/advanced/Network_based_Installations/
