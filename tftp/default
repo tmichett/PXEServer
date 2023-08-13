@@ -1,0 +1,24 @@
+#default vesamenu.c32
+#prompt 1
+UI vesamenu.c32
+timeout 600
+MENU TITLE Travis's Fedora Remix PXE Boot Menu
+#MENU RESOLUTION 1024 768
+MENU BACKGROUND splash.png
+menu width 80
+menu rows 14
+
+label local
+menu label Boot from ^local drive
+menu default
+localboot 0xffff
+
+label linux
+menu label ^Install Fedora 38 64-bit
+kernel f38/vmlinuz
+append initrd=f38/initrd.img inst.stage2=https://download.fedoraproject.org/pub/fedora/linux/releases/38/Server/x86_64/os/ ip=dhcp
+
+label server
+menu label ^Install Fedora 38 ( Minimal Image )
+kernel f38/vmlinuz
+append initrd=f38/initrd.img inst.stage2=https://download.fedoraproject.org/pub/fedora/linux/releases/38/Server/x86_64/os/ ip=dhcp ks=https://example.com/fedora/kickstarts/minimal.ks
