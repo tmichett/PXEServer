@@ -27,6 +27,7 @@ firewall_services:
   - ftp
   - dns
   - tftp
+  - http
   
 ## Configure Network and DNS Settings
 

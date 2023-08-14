@@ -39,6 +39,14 @@
         - f38
         - uefi
 
+## Make HTTPD Directory
+
+    - name: Create directory for TFTP Files
+      ansible.builtin.file:
+        path: /var/www/html/livecd
+        state: directory
+        mode: '0755'
+
 
 ##  Use Jinja Template Module to create configuration
 
