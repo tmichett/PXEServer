@@ -1,0 +1,27 @@
+- name: Setup System for a PXE Server
+  hosts: localhost
+  tasks:
+    - name: List Mount Points
+      ansible.builtin.debug:
+        msg: "{{ ansible_mounts | map(attribute='mount') | list }}"
+
+    - name: Set Ansible Mount Fact
+      ansible.builtin.set_fact:
+        mount_points: "{{ ansible_mounts | map(attribute='mount') | list }}"
+
+    - name: List Mount Points
+      ansible.builtin.debug:
+        msg: "{{ item }}"       
+          #   when: "'FedoraRemix' in  mount_points.msg"
+      when: "'FedoraRemix' in item" 
+      loop: "{{ mount_points }}"
+
+    - name: Set Mount Point for Fedora Remix
+      ansible.builtin.set_fact:
+        fedora_remix: "{{ item }}"
+      when: "'FedoraRemix' in item"
+      loop: "{{ mount_points }}"
+
+    - name: List Fedora Remix mount point
+      ansible.builtin.debug:
+        var: fedora_remix
