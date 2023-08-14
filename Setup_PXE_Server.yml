@@ -123,5 +123,5 @@
 
     - name: Copy SQUASHFS from FedoraRemix CD
       ansible.builtin.copy:
-        src: "{{fedora_remix}}"/LiveOS/squashfs.img
+        src: "{{ fedora_remix }/LiveOS/squashfs.img"
         dest: /var/www/html/livecd/
