@@ -27,6 +27,18 @@
         immediate: true 
       loop: "{{ firewall_services }}"
 
+
+## Create PXE Boot Files directory if don't exist
+    - name: Create the Remix Directories for PXEBoot
+      ansible.builtin.file:
+        path: /opt/FedoraRemixPXE/
+        state: directory
+        mode: '0755'
+      become: true
+
+## Check for Files in PXEBoot Remix Directory to decide if to download new files
+
+
 ## Make TFTP Directory
 
     - name: Create directory for TFTP Files
