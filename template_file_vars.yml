@@ -5,4 +5,11 @@ template_files:
 ## No longer needed in current version of OS and DHCPD
 #  - filename: ./templates/etc_sysconfig_dhcpd.j2
 #    destination_filename: /etc/sysconfig/dhcpd
-    
+
+## Create configuration for DNS
+  - filename: ./templates/reverse_dns_zone.j2
+    destination_filename: /var/named/zones/{{ net_subnet_reverse }}.in-addr-arpa.zone
+  - filename: ./templates/named.conf.j2
+    destination_filename: /etc/named.conf
+  - filename: ./templates/forward_dns_zone.j2
+    destination_filename: /var/named/zones/{{ dns_domain_name }}.zone
