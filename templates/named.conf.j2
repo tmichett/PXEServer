@@ -39,7 +39,7 @@ zone "{{ dns_domain_name }}" IN {
 
 zone "{{ net_subnet_reverse }}.in-addr.arpa" IN {
        type master;
-       file "{{ net_subnet_reverse }}.in-addr.arpa.zone";
+       file "{{ net_subnet_reverse }}.zone";
        allow-update{ none; };
 };
 
