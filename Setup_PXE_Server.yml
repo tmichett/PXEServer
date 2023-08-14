@@ -108,4 +108,20 @@
       loop: "{{ service_list }}"
 
 
-    
+## Copy SquashFS from mounted ISO or USB Drive
+
+
+    - name: Set Ansible Mount Fact
+      ansible.builtin.set_fact:
+        mount_points: "{{ ansible_mounts | map(attribute='mount') | list }}"
+
+    - name: Set Mount Point for Fedora Remix
+      ansible.builtin.set_fact:
+        fedora_remix: "{{ item }}"
+      when: "'FedoraRemix' in item"
+      loop: "{{ mount_points }}"
+
+    - name: Copy SQUASHFS from FedoraRemix CD
+      ansible.builtin.copy:
+        src: "{{fedora_remix}}"/LiveOS/squashfs.img
+        dest: /var/www/html/livecd/
