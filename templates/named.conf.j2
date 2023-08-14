@@ -11,7 +11,7 @@ options {
         // query-source    port 53;
         // query-source-v6 port 53;
 
-        allow-query     { localhost; "{{ network_subnet}}".0/24; };
+        allow-query     { localhost; {{ network_subnet}}.0/24; };
         allow-query-cache     { localhost; {{ network_subnet}}.0/24; };
 
         forward only;
