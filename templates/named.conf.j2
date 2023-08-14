@@ -33,13 +33,13 @@ zone "." IN {
 
 zone "{{ dns_domain_name }}" IN {
         type master;
-        file "zones/{{ dns_domain_name}}.zone";
+        file "{{ dns_domain_name}}.zone";
         allow-update{ none; };
 };
 
 zone "{{ net_subnet_reverse }}.in-addr.arpa" IN {
        type master;
-       file "zones/"{{ net_subnet_reverse }}".in-addr.arpa.zone";
+       file "{{ net_subnet_reverse }}.in-addr.arpa.zone";
        allow-update{ none; };
 };
 

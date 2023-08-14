@@ -8,8 +8,8 @@ template_files:
 
 ## Create configuration for DNS
   - filename: ./templates/reverse_dns_zone.j2
-    destination_filename: /var/named/zones/{{ net_subnet_reverse }}.in-addr-arpa.zone
+    destination_filename: /var/named/{{ net_subnet_reverse }}.in-addr-arpa.zone
   - filename: ./templates/named.conf.j2
     destination_filename: /etc/named.conf
   - filename: ./templates/forward_dns_zone.j2
-    destination_filename: /var/named/zones/{{ dns_domain_name }}.zone
+    destination_filename: /var/named/{{ dns_domain_name }}.zone
