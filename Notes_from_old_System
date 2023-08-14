@@ -205,6 +205,7 @@ server103               IN      A       192.168.0.103
 =========== Setup Reverse DNS Zone File ========================
 # vi /var/named/zones/0.168.192.in-addr-arpa.zone
 
+#
 ----------- File Contents --------------------
 $TTL 86400
 0.168.192.in-addr.arpa. IN      SOA     master.example.com. root.master.example.com. (
