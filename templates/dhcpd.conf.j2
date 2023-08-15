@@ -20,8 +20,8 @@ subnet {{ network_subnet}}.0 netmask 255.255.255.0 {
         }
 
         class "pxeclients" {
-               next-server {{ network_subnet}}.1;
-                #option tftp-server-name "{{ network_subnet}}.1";
+               next-server {{ network_subnet}}.254;
+                #option tftp-server-name "{{ network_subnet}}.254";
                if option architecture-type = 00:07 {
                         # UEFI SYSTEMS
                         filename "BOOTX64.EFI";
@@ -32,8 +32,8 @@ subnet {{ network_subnet}}.0 netmask 255.255.255.0 {
         }
 
         class "virtual" {
-               next-server {{ network_subnet}}.1;
-                #option tftp-server-name "{{ network_subnet}}.1";
+               next-server {{ network_subnet}}.254;
+                #option tftp-server-name "{{ network_subnet}}.254";
                if option architecture-type = 00:07 {
                         # UEFI SYSTEMS
                         filename "BOOTX64.EFI";
@@ -47,7 +47,7 @@ subnet {{ network_subnet}}.0 netmask 255.255.255.0 {
         option routers 192.168.0.254;
         option subnet-mask 255.255.255.0;
         option domain-name "example.com";
-        option domain-name-servers 192.168.0.1;
+        option domain-name-servers 192.168.0.254;
         default-lease-time 21600;
         max-lease-time 43200;
         # Assign IPs 101-120 to PXE clients
