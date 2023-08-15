@@ -125,3 +125,21 @@
       ansible.builtin.copy:
         src: "{{ fedora_remix }}/LiveOS/squashfs.img"
         dest: /var/www/html/livecd/
+
+## Enable IP Forwarding and Routing - name: 
+
+    - name: Enable IP Address Forwarding and Masquerading in Kernel
+      ansible.posix.sysctl:
+        name: net.ipv4.ip_forward
+        value: '1'
+        sysctl_set: true
+        state: present
+        reload: true
+
+    - name: Enable IP Address Forwarding and Masquerading in Firewall
+      ansible.posix.firewalld:
+        rich_rule: rule family=ipv4 source address={{ network_subnet }}.0/24 masquerade'
+        permanent: true
+        state: enabled 
+        immediate: true
+
