@@ -15,5 +15,5 @@ template_files:
     destination_filename: /var/named/{{ dns_domain_name }}.zone
 
 ## Create TFTP PXEBoot Default Menu
-  - filename: ./templates/tft-_default_pxelinux.j2
+  - filename: ./templates/tftp_default_pxelinux.j2
     destination_filename: /var/lib/tftpboot/pxelinux.cfg/default
