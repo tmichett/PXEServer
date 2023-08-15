@@ -138,7 +138,7 @@
 
     - name: Enable IP Address Forwarding and Masquerading in Firewall
       ansible.posix.firewalld:
-        rich_rule: rule family=ipv4 source address={{ network_subnet }}.0/24 masquerade'
+        rich_rule: rule family=ipv4 source address={{ network_subnet }}.0/24 masquerade
         permanent: true
         state: enabled 
         immediate: true
