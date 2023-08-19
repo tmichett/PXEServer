@@ -13,6 +13,14 @@
       debug:
         var: ansible_eth 
 
+    - name: Get List of Ansible interfaces   
+      set_fact:
+        interfaces: "{{ ansible_facts['ansible_interfaces'] }}"
+      when: hostvars[inventory_hostname]['ansible_' + item]['type'] == 'ether'
+      with_items:
+        - "{{ hostvars[inventory_hostname]['ansible_interfaces'] }}"
+
     - name: Print specific Facts
-      debug: 
-        msg: The Device {{ ansible_eth['device'] }} has an IP address of {{ ansible_eth['ipv4']['address'] }}
+      debug:
+        var: interfaces  
+        #msg: The Device {{ ansible_eth['device'] }} has an IP address of {{ ansible_eth['ipv4']['address'] }}
