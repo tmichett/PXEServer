@@ -22,6 +22,6 @@
 
     - name: Print specific Facts
       debug:
-        var:  {{ hostvars[inventory_hostname]['ansible_interfaces'] }}
+        var:  {{ hostvars['inventory_hostname']['ansible_interfaces'] }}
       when: hostvars[inventory_hostname]['ansible_interfaces']['type'] == 'ether'
         #msg: The Device {{ ansible_eth['device'] }} has an IP address of {{ ansible_eth['ipv4']['address'] }}
