@@ -12,3 +12,7 @@
     - name: Print Network Facts
       debug:
         var: ansible_eth 
+
+    - name: Print specific Facts
+      debug: 
+        msg: The Device ansible_eth['device'] has an IP address of ansible_eth['ipv4']['address']
