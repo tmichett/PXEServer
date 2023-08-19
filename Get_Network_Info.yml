@@ -17,6 +17,12 @@
       debug:
         var: ansible_facts['interfaces']
 
+    - name: Print specific facts
+      debug:
+        msg: The network interface {{ item }} has IP address {{ ansible_facts[item]['ipv4']['address']|default(None) }} 
+      with_items: 
+        -  "{{ ansible_interfaces }}"
+
     - name: Print specific Facts
       debug:
         var: ansible_facts['interfaces'] 
