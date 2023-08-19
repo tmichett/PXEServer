@@ -4,7 +4,7 @@
   tasks:
     - name: Capture Network Facts
       set_fact:
-        ansible_eth: "{% set ansible_eth = ansible_eth|default([]) + [hostvars[inventory_hostname]['ansible_' + item]] %}{{ ansible_eth|list }}"
+        ansible_eth: "{% set ansible_eth = ansible_eth|default([]) + [hostvars[inventory_hostname]['ansible_' + item]] %}"
       when: hostvars[inventory_hostname]['ansible_' + item]['type'] == 'ether'
       with_items:
         - "{{ hostvars[inventory_hostname]['ansible_interfaces'] }}"
