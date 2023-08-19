@@ -25,7 +25,7 @@
 
     - name: Print specific facts for all network interfaces with no IP Address
       debug:
-        msg: The network interface {{ item }} has IP address {{ ansible_facts[item]['ipv4']['address']|default(None) }} 
+        msg: The network interface {{ item }} has no IP address and can be used to be the DHCP Server.
       when: ansible_facts[item]['ipv4']['address'] is not defined 
       with_items: 
         -  "{{ ansible_interfaces }}"
