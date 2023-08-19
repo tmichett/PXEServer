@@ -15,7 +15,7 @@
 
     - name: Get List of Ansible interfaces   
       set_fact:
-        interfaces: "{{ ansible_facts['ansible_interfaces'] }}"
+        interfaces: "{{ hostvars[inventory_hostname]['ansible_' + item] }}"
       when: hostvars[inventory_hostname]['ansible_' + item]['type'] == 'ether'
       with_items:
         - "{{ hostvars[inventory_hostname]['ansible_interfaces'] }}"
