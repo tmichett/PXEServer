@@ -17,14 +17,19 @@
       debug:
         var: ansible_facts['interfaces']
 
-    - name: Print specific facts
+    - name: Print specific facts for all network interfaces
       debug:
         msg: The network interface {{ item }} has IP address {{ ansible_facts[item]['ipv4']['address']|default(None) }} 
       with_items: 
         -  "{{ ansible_interfaces }}"
 
-    - name: Print specific Facts
+    - name: Print specific facts for all network interfaces with no IP Address
       debug:
-        var: ansible_facts['interfaces'] 
-      when: ansible_facts['interfaces']['type'] == 'ether'
-        #msg: The Device {{ ansible_eth['device'] }} has an IP address of {{ ansible_eth['ipv4']['address'] }}
+        msg: The network interface {{ item }} has IP address {{ ansible_facts[item]['ipv4']['address']|default(None) }} 
+      when: ansible_facts[item]['ipv4']['address'] is not defined 
+      with_items: 
+        -  "{{ ansible_interfaces }}"
+
+
+
+      
