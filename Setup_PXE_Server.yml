@@ -42,7 +42,7 @@
 ## Enable Network and Set IP Address for DHCP Server
     - name: Use Network Role to Setup and Confiigure IP Address for DHCP Server
       ansible.builtin.import_role: 
-        name: 
+        name: linux-system-roles.network
       vars:
         network_provider: nm
         network_state:
@@ -51,7 +51,7 @@
               ipv4:
                 enabled: true
                 address:
-                  - ip: 192.168.122.250
+                  - ip: "{{ network_subnet }}".254
                     prefix-length: 24
               dhcp: false
           
