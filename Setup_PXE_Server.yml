@@ -39,6 +39,25 @@
 ## Check for Files in PXEBoot Remix Directory to decide if to download new files
 
 
+## Enable Network and Set IP Address for DHCP Server
+    - name: Use Network Role to Setup and Confiigure IP Address for DHCP Server
+      ansible.builtin.import_role: 
+        name: 
+      vars:
+        network_provider: nm
+        network_state:
+          interfaces:
+            - name: "{{ network_adapter }}"
+          type: ethernet
+          ip:
+            address:
+              - "{{ network_subnet }}".254/24
+      tags: 
+        - never
+
+          
+
+
 ## Make TFTP Directory
 
     - name: Create directory for TFTP Files
