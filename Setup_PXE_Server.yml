@@ -51,9 +51,9 @@
               ipv4:
                 enabled: true
                 address:
-                  - ip: "{{ network_subnet }}".254
+                  - ip: "{{ network_subnet }}.254"
                     prefix-length: 24
-              dhcp: false
+                dhcp: false
           
       tags: 
         - never
