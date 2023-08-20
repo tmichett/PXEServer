@@ -48,10 +48,13 @@
         network_state:
           interfaces:
             - name: "{{ network_adapter }}"
-          type: ethernet
-          ip:
-            address:
-              - "{{ network_subnet }}".254/24
+              ipv4:
+                enabled: true
+                address:
+                  - ip: 192.168.122.250
+                    prefix-length: 24
+              dhcp: false
+          
       tags: 
         - never
 
