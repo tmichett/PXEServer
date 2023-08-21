@@ -13,3 +13,7 @@ template_files:
     destination_filename: /etc/named.conf
   - filename: ./templates/forward_dns_zone.j2
     destination_filename: /var/named/{{ dns_domain_name }}.zone
+
+## Create TFTP PXEBoot Default Menu
+  - filename: ./templates/tftp_default_pxelinux.j2
+    destination_filename: /var/lib/tftpboot/pxelinux.cfg/default

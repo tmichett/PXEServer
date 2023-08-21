@@ -31,7 +31,7 @@ firewall_services:
   
 ## Configure Network and DNS Settings
 
-network_adapter: enp1s0    ## Network adapter to bind DHCP to
+network_adapter: enp7s0    ## Network adapter to bind DHCP to
 network_subnet: 192.168.0   ## Network Subnet. This is the left-most 3 sections of the subnet. For example, 192.168.0 for the 192.168.0.0/24 subnet
 net_subnet_reverse: 0.168.192 ## Network Subnet in reverse order
 

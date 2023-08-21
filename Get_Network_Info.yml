@@ -1,0 +1,35 @@
+---
+- name: Retrieve Network Cards and IP Addreses
+  hosts: localhost
+  tasks:
+  #  - name: Capture Network Facts
+  #    set_fact:
+  #      ansible_eth: "{% set ansible_eth = ansible_eth|default([]) + [hostvars[inventory_hostname]['ansible_' + item]] %}{{ ansible_eth|list }}"
+  #    when: hostvars[inventory_hostname]['ansible_' + item]['type'] == 'ether'
+  #    with_items:
+  #      - "{{ hostvars[inventory_hostname]['ansible_interfaces'] }}"
+
+  #  - name: Print Network Facts
+  #    debug:
+  #      var: ansible_eth 
+
+    - name: Print Ansible Facts
+      debug:
+        var: ansible_facts['interfaces']
+
+    - name: Print specific facts for all network interfaces
+      debug:
+        msg: The network interface {{ item }} has IP address {{ ansible_facts[item]['ipv4']['address']|default(None) }} 
+      with_items: 
+        -  "{{ ansible_interfaces }}"
+
+    - name: Print specific facts for all network interfaces with no IP Address
+      debug:
+        msg: The network interface {{ item }} has no IP address and can be used to be the DHCP Server.
+      when: ansible_facts[item]['ipv4']['address'] is not defined 
+      with_items: 
+        -  "{{ ansible_interfaces }}"
+
+
+
+      

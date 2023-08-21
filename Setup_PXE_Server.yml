@@ -39,6 +39,28 @@
 ## Check for Files in PXEBoot Remix Directory to decide if to download new files
 
 
+## Enable Network and Set IP Address for DHCP Server
+    - name: Use Network Role to Setup and Confiigure IP Address for DHCP Server
+      ansible.builtin.import_role: 
+        name: linux-system-roles.network
+      vars:
+        network_provider: nm
+        network_state:
+          interfaces:
+            - name: "{{ network_adapter }}"
+              ipv4:
+                enabled: true
+                address:
+                  - ip: "{{ network_subnet }}.254"
+                    prefix-length: 24
+                dhcp: false
+          
+      tags: 
+        - never
+
+          
+
+
 ## Make TFTP Directory
 
     - name: Create directory for TFTP Files
@@ -125,3 +147,21 @@
       ansible.builtin.copy:
         src: "{{ fedora_remix }}/LiveOS/squashfs.img"
         dest: /var/www/html/livecd/
+
+## Enable IP Forwarding and Routing - name: 
+
+    - name: Enable IP Address Forwarding and Masquerading in Kernel
+      ansible.posix.sysctl:
+        name: net.ipv4.ip_forward
+        value: '1'
+        sysctl_set: true
+        state: present
+        reload: true
+
+    - name: Enable IP Address Forwarding and Masquerading in Firewall
+      ansible.posix.firewalld:
+        rich_rule: rule family=ipv4 source address={{ network_subnet }}.0/24 masquerade
+        permanent: true
+        state: enabled 
+        immediate: true
+
