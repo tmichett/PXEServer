@@ -48,6 +48,9 @@ subnet {{ network_subnet}}.0 netmask 255.255.255.0 {
         option subnet-mask 255.255.255.0;
         option domain-name "example.com";
         option domain-name-servers 192.168.0.254;
+        range 192.168.0.1 192.168.0.40;
+        next-server 192.168.0.254;
+        filename "pxelinux.0";
         default-lease-time 21600;
         max-lease-time 43200;
         # Assign IPs 101-120 to PXE clients
