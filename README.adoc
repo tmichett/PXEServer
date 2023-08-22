@@ -1,0 +1,149 @@
+:icons: font
+ifdef::backend-pdf[]
+:title-page-background-image: image:images/Training_Cover.png[pdfwidth=8.0in,align=center]
+:pygments-style: tango
+:source-highlighter: pygments
+endif::[]
+ifndef::env-github[:icons: font]
+ifdef::env-github[]
+:status:
+:outfilesuffix: .adoc
+:caution-caption: :fire:
+:important-caption: :exclamation:
+:note-caption: :paperclip:
+:tip-caption: :bulb:
+:warning-caption: :warning:
+endif::[]
+
+= PXE Server README
+
+Instructions for using the PXEServer playbooks. Originally these playbooks were designed to work in conjunction with the Fedora_Remix Project (https://github.com/tmichett/Fedora_Remix). They will take the LiveCD and installed OS from this project and create a PXE Boot Kickstart server allowing the booting of the customized Live Fedora Remix.
+
+They can also be used to create a regular PXEBoot server, but some slight modifications are required to the playbook to copy different PXE images and Kickstart Trees.
+
+The playbooks already have default values set and they can be run as-is on the *FedoraRemix* ISO installation produced from the Fedora Remix project. They will result in the following:
+
+.Network Defaults
+DHCP Server IP: *192.168.0.254*
+DHCP Server/PXE Server Name: *master.example.com*
+DHCP Pools: *192.168.0.XXX*
+DNS Domain: *example.com*
+
+.PXE Boot Defaults
+* Fedora 38 Boot Images
+**  *initrd.img*
+** *vmlinuz*
+* Fedora 38 Live Image
+** *Boot Fedora 38 Remix 64-bit (LiveCD)*
+
+[CAUTION]
+======
+There are several variable files that are needed for the playbooks to run, but should not be changed.
+
+* *tftp_files.yml*
+* *tftp_boot_files.yml*
+* *template_file_vars.yml*
+* *file_copy_vars.yml*
+
+These files are used in the playbook to provide a list of files and templates that are to be copied or used as part of the playbook and are used in the various loops.
+
+The ony potential file you might want to modify is the *tftp_boot_files.yml* if you intend to provide additional boot files.
+======
+
+
+== Customizing the PXE Server for Various Networks
+
+.PXE Variables
+Most of the PXE Variables are located in the *pxe_vars.yml* file.
+
+*install_packages*: Packages to install for creating a PXEBoot kickstart server. These should most likely remain static and shouldn't need to be changed.
+
+.install_packages
+[source,yaml]
+----
+---
+## Packages to install
+install_packages: 
+  - httpd
+  - bind
+  - bind-utils
+  - vsftpd
+  - createrepo
+  - tree 
+  - syslinux 
+  - tftp-server 
+  - dhcp-server
+  - firewalld
+----
+
+*service_list*: List of services to enable from installed packages. These should most likely remain static and shouldn't need to be changed.
+
+.service_list
+[source,yaml]
+----
+---
+## Service Information
+service_list:
+  - httpd
+  - vsftpd
+  - named
+  - dhcpd
+  - tftp.socket
+----
+
+
+*firewall_services*: List of firewall services to enable from running services. These should most likely remain static and shouldn't need to be changed.
+
+.firewall_services
+[source,yaml]
+----
+---
+## Configuration of Network Ports
+firewall_services:
+  - dhcp
+  - ftp
+  - dns
+  - tftp
+  - http
+----
+
+
+[IMPORTANT]
+======
+The *network_adapter* is used in the playbook with a task tagged *never*. If you intend to run the playbook to configure the DHCP Server's network adapter, run it first with the tag *never* and confirm that the NIC has been configured as desired.
+======
+
+[NOTE]
+======
+The *network_subnet* defines the left-most portion of the IP address that exists in the */24* subnet. For example, if you want the IP address of the DHCP server to be 172.25.250.254, you would set the *network_subnet* to be *172.25.250*. This would ensure that the address of the DHCP server would be 172.25.250.254 as you would be in the *172.25.250* IP subnet space.
+
+The actual IP address will always be *.254* as that is part of what is contained in the various configuration files and JINJA templates.
+======
+
+.Network Subnet Settings for DHCP
+[source,yaml]
+----
+---
+## Configure Network and DNS Settings
+
+network_adapter: enp7s0    ## Network adapter to bind DHCP to <1>
+network_subnet: 192.168.0   ## Network Subnet. This is the left-most 3 sections of the subnet. For example, 192.168.0 for the 192.168.0.0/24 subnet <2>
+net_subnet_reverse: 0.168.192 ## Network Subnet in reverse order <3>
+----
+<1> Network adapter that should be configured as DHCP Server. *dhcpd* service will bind to this adapter and it should be configured with the *network_subnet*.254 address.
+<2> Subnet and IP Range. The default settings for DHCP is to use a */24* subnet with the DHCP server's IP being .254 as the last address of that subnet. The first three sets of "." will set the IP scheme for the subnet.
+<3> The reverse of the subnet which can be used easily for the DNS services
+
+
+
+The DNS server settings require a domain name, in this instance we are using *dns_domain_name* to create *example.com* domain. It also creates the name of the DHCP server, in this instance we want it configured as *master*. These values are used in the various JINJA2 templates to create the service configuration files.
+
+.Network Name and DNS Resolution Settings for BIND DNS Server
+[source,yaml]
+----
+---
+## Configure Domain Settings
+
+dns_domain_name: example.com  ## Network domain name. For example we want master.example.com to be the master server FQDN, domain name is "example.com"
+dns_server_hostname: master   ## Short hostname of the PXE boot/kickstart server. For example we want master.example.com to be the master server FQDN, the dns_server_hostname is "master".
+----
