@@ -4,12 +4,26 @@
   vars_prompt:
     - name: network_card
       prompt: Please specify the network device to configure ...
+      private: false
 
   tasks:
-    - name: Print Ansible Facts
+    - name: Verify Network Card Information
       debug:
         msg: Preparing to configure {{ network_card }}
 
+    - name: Configure Network Card 
+      ansible.builtin.import_role:
+        name: linux_system_roles.network
+        vars: 
+          network_connections:
+            - name: "{{ network_card }}"
+              type: ethernet
+              ip:
+                address:
+                  - 172.25.250.30/24
+
+        
+      
 
 
 
