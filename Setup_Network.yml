@@ -16,7 +16,7 @@
         name: linux-system-roles.network
       vars: 
         network_provider: nm
-a        network_connections:
+        network_connections:
           - name: "{{ network_card }}"
             type: ethernet
             ip:
