@@ -13,9 +13,10 @@
 
     - name: Configure Network Card 
       ansible.builtin.import_role:
-        name: linux_system_roles.network
+        name: linux-system-roles.network
       vars: 
-        network_connections:
+        network_provider: nm
+a        network_connections:
           - name: "{{ network_card }}"
             type: ethernet
             ip:
