@@ -1,0 +1,17 @@
+---
+- name: Setup Network Cards and IP Addreses
+  hosts: localhost
+  vars_prompt:
+    - name: network_card
+      prompt: Please specify the network device to configure ...
+
+  tasks:
+    - name: Print Ansible Facts
+      debug:
+        msg: Preparing to configure {{ network_card }}
+
+
+
+
+
+      
