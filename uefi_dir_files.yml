@@ -1,9 +1,9 @@
 ---
 uefi_dir_files:
-  - /opt/FedoraRemixPXE/uefi/BOOTX64.EFI
-  - /opt/FedoraRemixPXE/uefi/grubx64.efi
-  - /opt/FedoraRemixPXE/uefi/pxe_splash.png
-  - /opt/FedoraRemixPXE/uefi/shimx64.efi
+  - /opt/PXEServer/UEFI/BOOTX64.EFI
+  - /opt/PXEServer/UEFI/grubx64.efi
+  - /opt/PXEServer/UEFI/pxe_splash.png
+  - /opt/PXEServer/UEFI/shimx64.efi
 
 
   ### Files copied to /var/lib/tftpboot and /var/lib/tftpboot/uefi
