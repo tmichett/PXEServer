@@ -17,7 +17,7 @@ subnet {{ network_subnet}}.0 netmask 255.255.255.0 {
              #  option tftp-server-name "{{ network_subnet}}.254";
                if option architecture-type = 00:07 {
                         # UEFI SYSTEMS
-                        filename "BOOTX64.EFI";
+                        filename "uefi/shimx64.efi";
                 } else {
                         # EVERYBODY ELSE (BIOS)
                         filename "pxelinux.0";
@@ -41,7 +41,7 @@ subnet {{ network_subnet}}.0 netmask 255.255.255.0 {
                 # option tftp-server-name "{{ network_subnet}}.254";
                if option architecture-type = 00:07 {
                         # UEFI SYSTEMS
-                        filename "BOOTX64.EFI";
+                        filename "uefi/shimx64.efi";
 		} else {
                         # EVERYBODY ELSE (BIOS)
                         filename "pxelinux.0";
