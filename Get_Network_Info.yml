@@ -1,6 +1,7 @@
 ---
 - name: Retrieve Network Cards and IP Addreses
   hosts: localhost
+  become: true
   tasks:
   #  - name: Capture Network Facts
   #    set_fact:

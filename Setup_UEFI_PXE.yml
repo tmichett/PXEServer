@@ -1,0 +1,42 @@
+---
+- name: Setup System for a PXE Server
+  hosts: localhost
+  become: true
+  vars_files:
+    - tftp_boot_files.yml
+    - uefi_dir_files.yml
+    - uefi_files.yml
+
+  tasks:
+
+## Copy TFTP Kernel and Boot Files from Remote source to new directory for uEFI
+    - name: Copy Kernel and Boot Files to correct locations
+      ansible.builtin.copy:
+        src: "{{ item }}"
+        dest: /var/lib/tftpboot/
+        remote_src: true
+      loop: "{{ tftp_boot_files }}"
+
+## Create uEFI Directory
+    - name: Create the Remix Directories for PXEBoot
+      ansible.builtin.file:
+        path: /var/lib/tftpboot/uefi
+        state: directory
+        mode: '0755'
+      become: true
+
+## Copy Files to uEFI Directory
+    - name: Copy uEFI Files to TFTPBoot/uEFI Directory
+      ansible.builtin.copy:
+        src: "{{ item }}"
+        dest: /var/lib/tftpboot/uefi
+        remote_src: true
+      loop: "{{ uefi_dir_files }}"
+
+## Copy Files to for UEFI to TFTPBoot
+    - name: Copy UEFI Files to TFTPBoot
+      ansible.builtin.copy:
+        src: "{{ item }}"
+        dest: /var/lib/tftpboot/
+        remote_src: true
+      loop: "{{ uefi_dir_files }}"

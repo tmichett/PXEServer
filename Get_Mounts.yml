@@ -1,5 +1,6 @@
 - name: Setup System for a PXE Server
   hosts: localhost
+  become: true
   tasks:
     - name: List Mount Points
       ansible.builtin.debug:

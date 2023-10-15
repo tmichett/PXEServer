@@ -1,6 +1,7 @@
 ---
 - name: Setup Network Cards and IP Addreses
   hosts: localhost
+  become: true
   vars_prompt:
     - name: network_card
       prompt: Please specify the network device to configure ...
