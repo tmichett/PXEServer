@@ -4,6 +4,7 @@ uefi_dir_files:
   - /opt/PXEServer/UEFI/grubx64.efi
   - /opt/PXEServer/UEFI/pxe_splash.png
   - /opt/PXEServer/UEFI/shimx64.efi
+  - /opt/PXEServer/UEFI/grub.cfg
 
 
   ### Files copied to /var/lib/tftpboot and /var/lib/tftpboot/uefi
