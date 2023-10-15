@@ -1,0 +1,14 @@
+---
+### Setup PXEBooting
+
+- name: Get Network Card Information
+  import_playbook: Get_Network_Info.yml
+
+- name: Set Network Card Information
+  import_playbook: Setup_Network.yml
+
+- name: Setup PXE Server Packages and BIOS Boot
+  import_playbook: Setup_PXE_Server.yml
+
+- name: Setup PXE Boot UEFI
+  import_playbook: Setup_UEFI_PXE.yml  
